@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
-using Shared;
+using Shared1;
 class Program
 {
     static Dictionary<string, string> cache = new Dictionary<string, string>();
