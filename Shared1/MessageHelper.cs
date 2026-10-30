@@ -2,15 +2,15 @@
 {
     public class MessageHelper
     {
-        public static void FormatMessage(string command, string key, string value = "")
+        public static string FormatMessage(string command, string key, string value = "")
         {
             if (value != "")
             {
-                Console.WriteLine($"{command} {key} {value}");
+                return $"{command} {key} {value}";
             }
             else
             {
-                Console.WriteLine($"{command} {key}");
+                return $"{command} {key}";
             }
         }
     }

@@ -11,26 +11,28 @@ class Program
     {
         TcpListener listener = new TcpListener(IPAddress.Parse("127.0.0.1"), 8888);
         listener.Start();
+        Console.WriteLine("Server is running...");
         while (true)
         {
             TcpClient client = listener.AcceptTcpClient();
             NetworkStream stream = client.GetStream();
             StreamReader reader = new StreamReader(stream, Encoding.UTF8);
             StreamWriter writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
-
             string request = reader.ReadLine() ?? "";
-            if (!string.IsNullOrEmpty(request))
+            if (request != null)
             {
-                string[] Part = request.Split(' ');
+                string[] Part = request.Split(' ', 3, StringSplitOptions.RemoveEmptyEntries);
                 string command = Part[0];
                 if (command == "PUT")
                 {
                     if (Part.Length >= 3)
                     {
                         string key = Part[1];
-                        string val = Part[2];
-                        cache[key] = val;
-                        writer.WriteLine("Successfully added to cache.");
+                        string value = Part[2];
+
+                        cache[key] = value;
+
+                        writer.WriteLine("Successfully added to cache");
                     }
                     else
                     {
@@ -42,6 +44,7 @@ class Program
                     if (Part.Length >= 2)
                     {
                         string key = Part[1];
+
                         if (cache.ContainsKey(key))
                         {
                             writer.WriteLine(cache[key]);
@@ -58,7 +61,7 @@ class Program
                 }
                 else
                 {
-                    writer.WriteLine("Error: Just select from the given commands");
+                    writer.WriteLine("Error: Invalid command");
                 }
             }
             else
